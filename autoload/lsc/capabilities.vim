@@ -18,6 +18,14 @@ function! lsc#capabilities#normalize(capabilities) abort
       endif
     endif
   endif
+  if has_key(a:capabilities, 'signatureHelpProvider') &&
+      \ type(a:capabilities.signatureHelpProvider) != type(v:null)
+    let l:signature_help_provider = a:capabilities.signatureHelpProvider
+    if has_key(l:signature_help_provider, 'triggerCharacters')
+        let l:normalized.signaturehelp.triggerCharacters =
+           \ l:signature_help_provider['triggerCharacters']
+    endif
+  endif
   if has_key(a:capabilities, 'textDocumentSync')
     let l:text_document_sync = a:capabilities['textDocumentSync']
     let l:incremental = v:false
@@ -45,6 +53,7 @@ endfunction
 function! lsc#capabilities#defaults() abort
   return {
       \ 'completion': {'triggerCharacters': []},
+      \ 'signaturehelp': {'triggerCharacters': []},
       \ 'textDocumentSync': {
       \   'incremental': v:false,
       \   'sendDidSave': v:false,

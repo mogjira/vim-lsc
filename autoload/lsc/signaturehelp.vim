@@ -1,7 +1,36 @@
+function! lsc#signaturehelp#insertCharPre() abort
+  let s:next_char = v:char
+endfunction
+
 if !exists('s:initialized')
   let s:current_parameter = ''
+  let s:next_char = ''
   let s:initialized = v:true
 endif
+
+function! lsc#signaturehelp#textChanged() abort
+  if &paste | return | endif
+  if !g:lsc_enable_autocomplete | return | endif
+  " This may be <BS> or similar if not due to a character typed
+  if empty(s:next_char) | return | endif
+  call s:typedCharacter()
+  let s:next_char = ''
+endfunction
+
+function! s:typedCharacter() abort
+  if s:isTrigger(s:next_char)
+    call lsc#signaturehelp#getSignatureHelp()
+  endif
+endfunction
+
+function! s:isTrigger(char) abort
+  for l:server in lsc#server#current()
+    if index(l:server.capabilities.signaturehelp.triggerCharacters, a:char) >= 0
+      return v:true
+    endif
+  endfor
+  return v:false
+endfunction
 
 function! lsc#signaturehelp#getSignatureHelp() abort
   call lsc#file#flushChanges()
