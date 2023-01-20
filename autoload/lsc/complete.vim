@@ -111,11 +111,15 @@ function! s:SuggestCompletions(items) abort
   let l:base = l:start != col('.')
       \ ? getline('.')[l:start - 1:col('.') - 2]
       \ : ''
-  let l:completion_items = s:CompletionItems(l:base, a:items)
+  let l:snippet_items = s:SnippetItems()
+  let l:completion_items = s:SnippetItems() + s:CompletionItems(l:base, a:items)
   call s:SetCompleteOpt()
   if exists('#User#LSCAutocomplete')
     doautocmd <nomodeline> User LSCAutocomplete
   endif
+  echom l:completion_items
+  echom l:snippet_items
+  call add(l:completion_items, "Foooo")
   call complete(l:start, l:completion_items)
 endfunction
 
@@ -212,6 +216,23 @@ function! s:CompletionItems(base, lsp_items) abort
   endfor
 
   return l:prefix_case_matches + l:prefix_matches + l:substring_matches
+endfunction
+
+function! s:SnippetItems() abort
+  let l:items = []
+  if !exists("*UltiSnips#SnippetsInCurrentScope")
+    echom "No ultisnippies"
+    return l:items
+  endif
+  let l:cursnips = UltiSnips#SnippetsInCurrentScope()
+  let l:keys = keys(l:cursnips)
+  echom l:keys
+  for l:snip in l:keys
+    let l:item = {'word': l:snip, 'abbr': l:snip, 'icase': 1, 'dup': 1, 'kind': 'Snippet', 'menu': l:cursnips[l:snip]}
+    call add(l:items, l:item)
+  endfor
+  return l:items
+  echom l:items
 endfunction
 
 " Normalize the multiple potential fields which may convey the text to insert
