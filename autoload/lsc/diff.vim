@@ -23,7 +23,6 @@ function! lsc#diff#compute(old, new) abort
       \  'start': {'line': l:start_line, 'character': l:start_char},
       \  'end': {'line': l:adj_end_line, 'character': l:adj_end_char}},
       \ 'text': l:text,
-      \ 'rangeLength': l:length,
       \}
 
   return l:result
