@@ -119,7 +119,6 @@ function! s:SuggestCompletions(items) abort
   endif
   echom l:completion_items
   echom l:snippet_items
-  call add(l:completion_items, "Foooo")
   call complete(l:start, l:completion_items)
 endfunction
 
