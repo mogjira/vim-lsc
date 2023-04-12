@@ -145,6 +145,9 @@ function! s:Start(server) abort
       \ 'capabilities': s:ClientCapabilities(),
       \ 'trace': l:trace_level
       \}
+  if has_key(a:server['languageId'], 'rust')
+    let l:params['initializationOptions'] = {'check': {'overrideCommand': ['sh', '-c', 'rustcwrapper'] }}
+  endif
   call a:server._initialize(l:params, funcref('<SID>OnInitialize', [a:server]))
 endfunction
 
