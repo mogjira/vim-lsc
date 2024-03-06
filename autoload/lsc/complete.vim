@@ -59,9 +59,6 @@ augroup END
 "
 " Minimum length can be configured with `g:lsc_autocomplete_length`.
 function! s:isCompletable() abort
-  if exists('b:lsc_is_completing') && b:lsc_is_completing
-    return v:false
-  endif
   if s:next_char !~# '\w' | return v:false | endif
   let l:cur_col = col('.')
   let l:min_length = exists('g:lsc_autocomplete_length') ?

@@ -131,6 +131,7 @@ augroup LSC
       \ call <SID>IfEnabled('lsc#cursor#onChangesFlushed')
 
   autocmd TextChangedI * call <SID>IfEnabled('lsc#complete#textChanged')
+  autocmd TextChangedP * call <SID>IfEnabled('lsc#complete#textChanged')
   autocmd InsertCharPre * call <SID>IfEnabled('lsc#complete#insertCharPre')
 
   autocmd VimLeave * call lsc#server#exit()
