@@ -131,8 +131,11 @@ augroup LSC
       \ call <SID>IfEnabled('lsc#cursor#onChangesFlushed')
 
   autocmd TextChangedI * call <SID>IfEnabled('lsc#complete#textChanged')
+  autocmd TextChangedI * call <SID>IfEnabled('lsc#signaturehelp#textChanged')
   autocmd TextChangedP * call <SID>IfEnabled('lsc#complete#textChanged')
+  autocmd TextChangedP * call <SID>IfEnabled('lsc#signaturehelp#textChanged')
   autocmd InsertCharPre * call <SID>IfEnabled('lsc#complete#insertCharPre')
+  autocmd InsertCharPre * call <SID>IfEnabled('lsc#signaturehelp#insertCharPre')
 
   autocmd VimLeave * call lsc#server#exit()
   if exists('##ExitPre')
